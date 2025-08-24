@@ -6,10 +6,10 @@
        INPUT-OUTPUT SECTION.
        FILE-CONTROL.
            SELECT POSITION-FILE ASSIGN TO "position"
-           ORGANIZATION IS INDEXED
-           ACCESS IS DYNAMIC
-           RECORD KEY IS POSITION-ID
-           FILE STATUS IS FS-POSITION.
+               ORGANIZATION IS INDEXED
+               ACCESS IS DYNAMIC
+               RECORD KEY IS POSITION-ID
+               FILE STATUS IS FS-POSITION.
 
        DATA DIVISION.
        FILE SECTION.
@@ -19,9 +19,17 @@
            05 POSITION-NAME    PIC X(20).
            05 BASE-SALARY      PIC 9(10).
        WORKING-STORAGE SECTION.
+       01 CLI-INPUT PIC X(32).
        01 FS-POSITION PIC XX.
 
        PROCEDURE DIVISION.
-       DISPLAY "CRUNCH".
+       PERFORM PROCEDURE-MAIN.
+       CLI-HANDLER.
+           DISPLAY "> " WITH NO ADVANCING.
+           ACCEPT CLI-INPUT.
+,      PROCEDURE-MAIN.
+           PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
+           DISPLAY "exiting crunch...".
+           STOP RUN.
+
        END PROGRAM CRUNCH.
-       
