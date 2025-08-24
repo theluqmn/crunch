@@ -22,4 +22,6 @@
        01 FS-POSITION PIC XX.
 
        PROCEDURE DIVISION.
+       DISPLAY "CRUNCH".
        END PROGRAM CRUNCH.
+       
