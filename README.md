@@ -37,8 +37,8 @@ this program is written in cobol and is compiled using `gnucobol`. it is a simpl
 
 ### database design
 
-- `POSITION(position_id TEXT PRIMARY KEY, name TEXT, base_salary INT)`
-- `EMPLOYEE(ic INT PRIMARY KEY, name TEXT, position_id FOREIGN KEY)`
+- `POSITION(position-id TEXT PRIMARY KEY, name TEXT, base-salary INT)`
+- `EMPLOYEE(ic INT PRIMARY KEY, name TEXT, position-id FOREIGN KEY)`
 - `LOGS(id INT PRIMARY KEY, time INT, event TEXT)`
 
 ## extras
