@@ -21,6 +21,7 @@
        WORKING-STORAGE SECTION.
        01 CLI-INPUT PIC X(32).
        01 FS-POSITION PIC XX.
+       01 COUNTER PIC 9(5).
 
        PROCEDURE DIVISION.
        DISPLAY "CRUNCH - human resource management done right".
@@ -38,6 +39,8 @@
                PERFORM PROCEDURE-POSITION
            ELSE IF CLI-INPUT = "position-add" THEN
                PERFORM POSITION-ADD
+           ELSE IF CLI-INPUT = "position-list" THEN
+               PERFORM POSITION-LIST
            ELSE IF CLI-INPUT = "exit" THEN
                DISPLAY "exiting..."
            ELSE
@@ -76,6 +79,38 @@
 
            DISPLAY " ".
            DISPLAY "position added successfully.".
+
+           POSITION-LIST.
+           DISPLAY "---------------------------------------------".
+           DISPLAY "LIST ALL POSITIONS".
+           DISPLAY " ".
+
+           DISPLAY 
+           "NUM   | "
+           "ID         | "
+           "NAME                 | "
+           "SALARY".
+           DISPLAY
+           "------|"
+           "------------|"
+           "----------------------|"
+           "------------"
+           MOVE 0 TO COUNTER.
+           OPEN INPUT POSITION-FILE
+           PERFORM UNTIL FS-POSITION NOT = '00'
+               READ POSITION-FILE NEXT
+                   AT END MOVE '99'TO FS-POSITION
+               NOT AT END
+                   ADD 1 TO COUNTER
+                   DISPLAY
+                   COUNTER " | "
+                   POSITION-ID " | "
+                   POSITION-NAME " | "
+                   POSITION-SALARY
+               END-READ
+           END-PERFORM
+           CLOSE POSITION-FILE.
+           DISPLAY " ".
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            STOP RUN.
