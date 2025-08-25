@@ -44,6 +44,9 @@
            ACCEPT CLI-INPUT.
            IF CLI-INPUT = "setup" THEN
                PERFORM PROCEDURE-SETUP
+           ELSE IF CLI-INPUT = "exit" THEN
+               DISPLAY "exiting..."
+      *    position
            ELSE IF CLI-INPUT = "pos" THEN
                PERFORM PROCEDURE-POSITION
            ELSE IF CLI-INPUT = "pos add" THEN
@@ -54,8 +57,9 @@
                PERFORM POSITION-EDIT
            ELSE IF CLI-INPUT = "pos delete" THEN
                PERFORM POSITION-DELETE
-           ELSE IF CLI-INPUT = "exit" THEN
-               DISPLAY "exiting..."
+      *    employee
+           ELSE IF CLI-INPUT = "emp" THEN
+               PERFORM PROCEDURE-EMPLOYEE
            ELSE
                DISPLAY "unknown command entered"
            END-IF.
@@ -77,6 +81,7 @@
            DISPLAY "[pos add]          add a new position".
            DISPLAY "[pos edit]         edit a position".
            DISPLAY "[pos delete]       delete a position".
+           DISPLAY " ".
 
            POSITION-ADD.
            DISPLAY "---------------------------------------------".
@@ -190,6 +195,13 @@
                    "position deleted successfully"
                END-DELETE
                CLOSE POSITION-FILE.
+       PROCEDURE-EMPLOYEE.
+           DISPLAY "---------------------------------------------".
+           DISPLAY "EMPLOYEE MANAGEMENT OVERVIEW".
+           DISPLAY " ".
+           DISPLAY "[emp add]          add a new employee".
+           DISPLAY " ".
+
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            STOP RUN.
