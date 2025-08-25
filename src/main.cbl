@@ -70,6 +70,8 @@
       *    employee
            ELSE IF CLI-INPUT = "emp" THEN
                PERFORM PROCEDURE-EMPLOYEE
+           ELSE IF CLI-INPUT = "emp add" THEN
+               PERFORM EMPLOYEE-ADD
            ELSE
                DISPLAY "unknown command entered"
            END-IF.
@@ -217,6 +219,32 @@
            DISPLAY " ".
            DISPLAY "[emp add]          add a new employee".
            DISPLAY " ".
+
+           EMPLOYEE-ADD.
+           DISPLAY "---------------------------------------------".
+           DISPLAY "ADD A NEW EMPLOYEE".
+           DISPLAY " ".
+           DISPLAY "(1/3) ic:          " WITH NO ADVANCING.
+           ACCEPT EMPLOYEE-IC
+           DISPLAY "(2/3) name:        " WITH NO ADVANCING.
+           ACCEPT EMPLOYEE-NAME.
+           DISPLAY "(3/3) position:    " WITH NO ADVANCING.
+           ACCEPT EMPLOYEE-POSITION.
+
+           OPEN I-O POSITION-FILE.
+           READ POSITION-FILE KEY IS POSITION-ID
+               INVALID KEY
+                   DISPLAY "invalid position id"
+               NOT INVALID KEY
+                   OPEN I-O EMPLOYEE-FILE
+                   WRITE EMPLOYEE-RECORD
+                   CLOSE EMPLOYEE-FILE
+           END-READ.
+           CLOSE POSITION-FILE.
+
+           DISPLAY " ".
+           DISPLAY "employee added successfully.".
+
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            STOP RUN.
