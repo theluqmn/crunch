@@ -72,6 +72,8 @@
                PERFORM PROCEDURE-EMPLOYEE
            ELSE IF CLI-INPUT = "emp add" THEN
                PERFORM EMPLOYEE-ADD
+           ELSE IF CLI-INPUT = "emp list" THEN
+               PERFORM EMPLOYEE-LIST
            ELSE
                DISPLAY "unknown command entered"
            END-IF.
@@ -97,7 +99,6 @@
            DISPLAY "[pos add]          add a new position".
            DISPLAY "[pos edit]         edit a position".
            DISPLAY "[pos delete]       delete a position".
-           DISPLAY " ".
 
            POSITION-ADD.
            DISPLAY "---------------------------------------------".
@@ -217,21 +218,22 @@
            DISPLAY "---------------------------------------------".
            DISPLAY "EMPLOYEE MANAGEMENT OVERVIEW".
            DISPLAY " ".
+           DISPLAY "[emp list]         list all the employees".
            DISPLAY "[emp add]          add a new employee".
-           DISPLAY " ".
 
            EMPLOYEE-ADD.
            DISPLAY "---------------------------------------------".
            DISPLAY "ADD A NEW EMPLOYEE".
            DISPLAY " ".
            DISPLAY "(1/3) ic:          " WITH NO ADVANCING.
-           ACCEPT EMPLOYEE-IC
+           ACCEPT EMPLOYEE-IC.
            DISPLAY "(2/3) name:        " WITH NO ADVANCING.
            ACCEPT EMPLOYEE-NAME.
            DISPLAY "(3/3) position:    " WITH NO ADVANCING.
            ACCEPT EMPLOYEE-POSITION.
 
            OPEN I-O POSITION-FILE.
+           MOVE EMPLOYEE-POSITION TO POSITION-ID.
            READ POSITION-FILE KEY IS POSITION-ID
                INVALID KEY
                    DISPLAY "invalid position id"
@@ -239,12 +241,42 @@
                    OPEN I-O EMPLOYEE-FILE
                    WRITE EMPLOYEE-RECORD
                    CLOSE EMPLOYEE-FILE
+                   DISPLAY "employee added successfully."
            END-READ.
            CLOSE POSITION-FILE.
 
+           EMPLOYEE-LIST.
+           DISPLAY "---------------------------------------------".
+           DISPLAY "LIST ALL EMPLOYEES".
            DISPLAY " ".
-           DISPLAY "employee added successfully.".
 
+           DISPLAY 
+           "NUM   | "
+           "ID               | "
+           "NAME                             | "
+           "POSITION".
+           DISPLAY
+           "------|"
+           "------------------|"
+           "----------------------------------|"
+           "-----------"
+           MOVE 0 TO COUNTER.
+           OPEN INPUT EMPLOYEE-FILE
+           PERFORM UNTIL FS-EMPLOYEE NOT = '00'
+               READ EMPLOYEE-FILE NEXT
+                   AT END MOVE '99'TO FS-EMPLOYEE
+               NOT AT END
+                   ADD 1 TO COUNTER
+                   DISPLAY
+                   COUNTER " | "
+                   EMPLOYEE-IC " | "
+                   EMPLOYEE-NAME " | "
+                   EMPLOYEE-POSITION
+               END-READ
+           END-PERFORM
+           CLOSE EMPLOYEE-FILE.
+           DISPLAY " ".
+           DISPLAY "total: " COUNTER.
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            STOP RUN.
