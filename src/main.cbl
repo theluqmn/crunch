@@ -23,6 +23,15 @@
        01 FS-POSITION PIC XX.
        01 COUNTER PIC 9(5).
 
+       01 TEMPSTR-A PIC X(16).
+       01 TEMPSTR-B PIC X(16).
+
+       01 TEMPNUM-A PIC X(16).
+
+       01 WS-POSITION-ID PIC X(10).
+       01 WS-POSITION-NAME PIC X(20).
+       01 WS-POSITION-SALARY PIC 9(10).
+
        PROCEDURE DIVISION.
        DISPLAY "CRUNCH - human resource management done right".
        DISPLAY " ".
@@ -35,11 +44,11 @@
            ACCEPT CLI-INPUT.
            IF CLI-INPUT = "setup" THEN
                PERFORM PROCEDURE-SETUP
-           ELSE IF CLI-INPUT = "position" THEN
+           ELSE IF CLI-INPUT = "pos" THEN
                PERFORM PROCEDURE-POSITION
-           ELSE IF CLI-INPUT = "position-add" THEN
+           ELSE IF CLI-INPUT = "pos add" THEN
                PERFORM POSITION-ADD
-           ELSE IF CLI-INPUT = "position-list" THEN
+           ELSE IF CLI-INPUT = "pos list" THEN
                PERFORM POSITION-LIST
            ELSE IF CLI-INPUT = "exit" THEN
                DISPLAY "exiting..."
@@ -58,9 +67,10 @@
            DISPLAY "setup complete".
        PROCEDURE-POSITION.
            DISPLAY "---------------------------------------------".
-           DISPLAY "POSITION OVERVIEW".
+           DISPLAY "POSITION MANAGEMENT OVERVIEW".
            DISPLAY " ".
-           DISPLAY "[position-add]     add a new position.".
+           DISPLAY "[pos add]      add a new position".
+           DISPLAY "[pos list]     list all positions".
 
            POSITION-ADD.
            DISPLAY "---------------------------------------------".
@@ -110,7 +120,27 @@
                END-READ
            END-PERFORM
            CLOSE POSITION-FILE.
+
+           POSITION-EDIT.
+           DISPLAY "---------------------------------------------".
+           DISPLAY "EDIT A POSITION".
            DISPLAY " ".
+           DISPLAY "properties:".
+           DISPLAY "[name]         name of the position".
+           DISPLAY "[salary]       salary of the position".
+
+           DISPLAY "(1/3) id:          " WITH NO ADVANCING.
+           ACCEPT POSITION-ID.
+           DISPLAY "(2/3) property:    " WITH NO ADVANCING.
+           ACCEPT TEMPSTR-A.
+           DISPLAY "(3/3) new value:   " WITH NO ADVANCING.
+           ACCEPT TEMPSTR-B.
+
+           IF TEMPSTR-A = "name" THEN
+               
+           IF TEMPSTR-A = "salary" THEN
+           ELSE
+               DISPLAY "invalid property name"
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            STOP RUN.
