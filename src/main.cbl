@@ -73,8 +73,10 @@
            DISPLAY "---------------------------------------------".
            DISPLAY "POSITION MANAGEMENT OVERVIEW".
            DISPLAY " ".
-           DISPLAY "[pos add]          add a new position".
            DISPLAY "[pos list]         list all positions".
+           DISPLAY "[pos add]          add a new position".
+           DISPLAY "[pos edit]         edit a position".
+           DISPLAY "[pos delete]       delete a position".
 
            POSITION-ADD.
            DISPLAY "---------------------------------------------".
@@ -124,6 +126,8 @@
                END-READ
            END-PERFORM
            CLOSE POSITION-FILE.
+           DISPLAY " ".
+           DISPLAY "total: " COUNTER.
 
            POSITION-EDIT.
            DISPLAY "---------------------------------------------".
