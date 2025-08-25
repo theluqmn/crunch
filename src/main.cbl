@@ -50,6 +50,8 @@
                PERFORM POSITION-ADD
            ELSE IF CLI-INPUT = "pos list" THEN
                PERFORM POSITION-LIST
+           ELSE IF CLI-INPUT = "pos edit" THEN
+               PERFORM POSITION-EDIT
            ELSE IF CLI-INPUT = "exit" THEN
                DISPLAY "exiting..."
            ELSE
@@ -69,8 +71,8 @@
            DISPLAY "---------------------------------------------".
            DISPLAY "POSITION MANAGEMENT OVERVIEW".
            DISPLAY " ".
-           DISPLAY "[pos add]      add a new position".
-           DISPLAY "[pos list]     list all positions".
+           DISPLAY "[pos add]          add a new position".
+           DISPLAY "[pos list]         list all positions".
 
            POSITION-ADD.
            DISPLAY "---------------------------------------------".
@@ -126,8 +128,8 @@
            DISPLAY "EDIT A POSITION".
            DISPLAY " ".
            DISPLAY "properties:".
-           DISPLAY "[name]         name of the position".
-           DISPLAY "[salary]       salary of the position".
+           DISPLAY "[name]             name of the position".
+           DISPLAY "[salary]           salary of the position".
 
            DISPLAY "(1/3) id:          " WITH NO ADVANCING.
            ACCEPT POSITION-ID.
@@ -137,10 +139,30 @@
            ACCEPT TEMPSTR-B.
 
            IF TEMPSTR-A = "name" THEN
-               
-           IF TEMPSTR-A = "salary" THEN
+               OPEN I-O POSITION-FILE
+               READ POSITION-FILE KEY IS POSITION-ID
+                   INVALID KEY
+                       DISPLAY "invalid position id"
+                   NOT INVALID KEY
+                       MOVE TEMPSTR-B TO POSITION-NAME
+                       REWRITE POSITION-RECORD
+                       DISPLAY "position name successfully"
+               END-READ
+               CLOSE POSITION-FILE
+           ELSE IF TEMPSTR-A = "salary" THEN
+               OPEN I-O POSITION-FILE
+               READ POSITION-FILE KEY IS POSITION-ID
+                   INVALID KEY
+                       DISPLAY "invalid position id"
+                   NOT INVALID KEY
+                       MOVE TEMPSTR-B TO POSITION-SALARY
+                       REWRITE POSITION-RECORD
+                       DISPLAY "position salary updated"
+               END-READ
+               CLOSE POSITION-FILE
            ELSE
                DISPLAY "invalid property name"
+           END-IF.
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            STOP RUN.
