@@ -9,10 +9,10 @@ human resource management done right
 > [!NOTE]
 > this project is a work-in-progress.
 
-- manage company positions
-- manage employee data
-- payroll processing
-- comprehensive logging system
+- [x] manage company positions
+- [x] manage employee data
+- [ ] payroll processing
+- [ ] comprehensive logging system
 
 ## how to use
 
