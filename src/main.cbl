@@ -25,9 +25,23 @@
        PROCEDURE DIVISION.
        PERFORM PROCEDURE-MAIN.
        CLI-HANDLER.
+           DISPLAY "------------------------------------------".
            DISPLAY "> " WITH NO ADVANCING.
            ACCEPT CLI-INPUT.
-,      PROCEDURE-MAIN.
+           IF CLI-INPUT = "setup" THEN
+               PERFORM PROCEDURE-SETUP
+           ELSE
+               DISPLAY "unknown command entered"
+           END-IF.
+       PROCEDURE-SETUP.
+           DISPLAY "------------------------------------------".
+           DISPLAY "[ SETUP CRUNCH ]".
+           DISPLAY " ".
+           OPEN OUTPUT POSITION-FILE.
+           CLOSE POSITION-FILE.
+           DISPLAY "(1/1) position file created".
+           DISPLAY "setup complete".
+       PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            DISPLAY "exiting crunch...".
            STOP RUN.
