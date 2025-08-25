@@ -52,6 +52,8 @@
                PERFORM POSITION-LIST
            ELSE IF CLI-INPUT = "pos edit" THEN
                PERFORM POSITION-EDIT
+           ELSE IF CLI-INPUT = "pos delete" THEN
+               PERFORM POSITION-DELETE
            ELSE IF CLI-INPUT = "exit" THEN
                DISPLAY "exiting..."
            ELSE
@@ -130,6 +132,7 @@
            DISPLAY "properties:".
            DISPLAY "[name]             name of the position".
            DISPLAY "[salary]           salary of the position".
+           DISPLAY " ".
 
            DISPLAY "(1/3) id:          " WITH NO ADVANCING.
            ACCEPT POSITION-ID.
@@ -146,7 +149,7 @@
                    NOT INVALID KEY
                        MOVE TEMPSTR-B TO POSITION-NAME
                        REWRITE POSITION-RECORD
-                       DISPLAY "position name successfully"
+                       DISPLAY "position name updated"
                END-READ
                CLOSE POSITION-FILE
            ELSE IF TEMPSTR-A = "salary" THEN
@@ -163,8 +166,27 @@
            ELSE
                DISPLAY "invalid property name"
            END-IF.
+
+           POSITION-DELETE.
+           DISPLAY "---------------------------------------------".
+           DISPLAY "DELETE A POSITION".
+           DISPLAY " ".
+
+           DISPLAY "(1/2) id:          " WITH NO ADVANCING.
+           ACCEPT POSITION-ID.
+           DISPLAY "(2/2) confirm? 'y':" WITH NO ADVANCING.
+           ACCEPT TEMPSTR-A.
+
+           IF TEMPSTR-A = "y" THEN
+               OPEN I-O POSITION-FILE
+               DELETE POSITION-FILE
+                   INVALID KEY DISPLAY 
+                   "position not found"
+                   NOT INVALID KEY DISPLAY 
+                   "position deleted successfully"
+               END-DELETE
+               CLOSE POSITION-FILE.
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            STOP RUN.
-
        END PROGRAM CRUNCH.
