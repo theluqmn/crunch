@@ -36,11 +36,11 @@
        01 FS-POSITION              PIC XX.
        01 FS-EMPLOYEE              PIC XX.
       *temporary str variables
-       01 TEMPSTR-A                PIC X(16).
-       01 TEMPSTR-B                PIC X(16).
+       01 TEMPSTR-A                PIC X(32).
+       01 TEMPSTR-B                PIC X(32).
       *temporary num variables
-       01 TEMPNUM-A                PIC X(16).
-       01 TEMPNUM-B                PIC X(16).
+       01 TEMPNUM-A                PIC X(32).
+       01 TEMPNUM-B                PIC X(32).
 
        PROCEDURE DIVISION.
        DISPLAY "CRUNCH - human resource management done right".
@@ -76,6 +76,8 @@
                PERFORM EMPLOYEE-ADD
            ELSE IF CLI-INPUT = "emp list" THEN
                PERFORM EMPLOYEE-LIST
+           ELSE IF CLI-INPUT = "emp edit" THEN
+               PERFORM EMPLOYEE-EDIT
            ELSE
                DISPLAY "unknown command entered"
            END-IF.
@@ -290,6 +292,38 @@
            CLOSE EMPLOYEE-FILE.
            DISPLAY " ".
            DISPLAY "total: " COUNTER.
+
+           EMPLOYEE-EDIT.
+           DISPLAY "---------------------------------------------".
+           DISPLAY "EDIT AN EMPLOYEE INFORMATION".
+           DISPLAY " ".
+           DISPLAY "properties:".
+           DISPLAY "[name]             name of the employee".
+      *    DISPLAY "[position]         position of the employee".
+           DISPLAY " ".
+
+           DISPLAY "(1/3) ic:          " WITH NO ADVANCING.
+           ACCEPT EMPLOYEE-IC.
+           DISPLAY "(2/3) property:    " WITH NO ADVANCING.
+           ACCEPT TEMPSTR-A.
+           DISPLAY "(3/3) new value:   " WITH NO ADVANCING.
+           ACCEPT TEMPSTR-B.
+
+           IF TEMPSTR-A = "name" THEN
+               OPEN I-O EMPLOYEE-FILE
+               READ EMPLOYEE-FILE KEY IS EMPLOYEE-IC
+                   INVALID KEY
+                       DISPLAY "invalid employee ic"
+                   NOT INVALID KEY
+                       MOVE TEMPSTR-B TO EMPLOYEE-NAME
+                       REWRITE EMPLOYEE-RECORD
+                       DISPLAY "employee name updated"
+               END-READ
+               CLOSE EMPLOYEE-FILE
+           ELSE
+               DISPLAY "invalid property name"
+           END-IF.
+
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            STOP RUN.
