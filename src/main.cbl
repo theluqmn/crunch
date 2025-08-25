@@ -10,27 +10,37 @@
                ACCESS IS DYNAMIC
                RECORD KEY IS POSITION-ID
                FILE STATUS IS FS-POSITION.
+           SELECT EMPLOYEE-FILE ASSIGN TO "employee"
+               ORGANIZATION IS INDEXED
+               ACCESS IS DYNAMIC
+               RECORD KEY IS EMPLOYEE-IC
+               FILE STATUS IS FS-EMPLOYEE.
 
        DATA DIVISION.
        FILE SECTION.
        FD POSITION-FILE.
        01 POSITION-RECORD.
-           05 POSITION-ID PIC X(10).
-           05 POSITION-NAME PIC X(20).
-           05 POSITION-SALARY PIC 9(10).
+           05 POSITION-ID          PIC X(10).
+           05 POSITION-NAME        PIC X(20).
+           05 POSITION-SALARY      PIC 9(10).
+       FD EMPLOYEE-FILE.
+       01 EMPLOYEE-RECORD.
+           05 EMPLOYEE-IC          PIC X(16).
+           05 EMPLOYEE-NAME        PIC X(32).
+           05 EMPLOYEE-POSITION    PIC X(10).
        WORKING-STORAGE SECTION.
-       01 CLI-INPUT PIC X(32).
-       01 FS-POSITION PIC XX.
-       01 COUNTER PIC 9(5).
-
-       01 TEMPSTR-A PIC X(16).
-       01 TEMPSTR-B PIC X(16).
-
-       01 TEMPNUM-A PIC X(16).
-
-       01 WS-POSITION-ID PIC X(10).
-       01 WS-POSITION-NAME PIC X(20).
-       01 WS-POSITION-SALARY PIC 9(10).
+      *logic variables
+       01 COUNTER                  PIC 9(5).
+       01 CLI-INPUT                PIC X(32).
+      *file status variables
+       01 FS-POSITION              PIC XX.
+       01 FS-EMPLOYEE              PIC XX.
+      *temporary str variables
+       01 TEMPSTR-A                PIC X(16).
+       01 TEMPSTR-B                PIC X(16).
+      *temporary num variables
+       01 TEMPNUM-A                PIC X(16).
+       01 TEMPNUM-B                PIC X(16).
 
        PROCEDURE DIVISION.
        DISPLAY "CRUNCH - human resource management done right".
@@ -70,8 +80,12 @@
 
            OPEN OUTPUT POSITION-FILE.
            CLOSE POSITION-FILE.
+           DISPLAY "(1/2) position file created".
+           
+           OPEN OUTPUT EMPLOYEE-FILE.
+           CLOSE EMPLOYEE-FILE.
+           DISPLAY "(2/2) employee file created"
 
-           DISPLAY "(1/1) position file created".
            DISPLAY "setup complete".
        PROCEDURE-POSITION.
            DISPLAY "---------------------------------------------".
@@ -194,14 +208,15 @@
                    NOT INVALID KEY DISPLAY 
                    "position deleted successfully"
                END-DELETE
-               CLOSE POSITION-FILE.
+               CLOSE POSITION-FILE
+           ELSE
+               DISPLAY "operation cancelled".
        PROCEDURE-EMPLOYEE.
            DISPLAY "---------------------------------------------".
            DISPLAY "EMPLOYEE MANAGEMENT OVERVIEW".
            DISPLAY " ".
            DISPLAY "[emp add]          add a new employee".
            DISPLAY " ".
-
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
            STOP RUN.
