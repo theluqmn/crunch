@@ -78,6 +78,8 @@
                PERFORM EMPLOYEE-LIST
            ELSE IF CLI-INPUT = "emp edit" THEN
                PERFORM EMPLOYEE-EDIT
+           ELSE IF CLI-INPUT = "emp delete" THEN
+               PERFORM EMPLOYEE-DELETE
            ELSE
                DISPLAY "unknown command entered"
            END-IF.
@@ -323,6 +325,28 @@
            ELSE
                DISPLAY "invalid property name"
            END-IF.
+
+           EMPLOYEE-DELETE.
+           DISPLAY "---------------------------------------------".
+           DISPLAY "REMOVE AN EMPLOYEE".
+           DISPLAY " ".
+
+           DISPLAY "(1/2) ic:          " WITH NO ADVANCING.
+           ACCEPT EMPLOYEE-IC
+           DISPLAY "(2/2) confirm? 'y':" WITH NO ADVANCING.
+           ACCEPT TEMPSTR-A.
+
+           IF TEMPSTR-A = "y" THEN
+               OPEN I-O EMPLOYEE-FILE
+               DELETE EMPLOYEE-FILE
+                   INVALID KEY DISPLAY 
+                   "employee id not found"
+                   NOT INVALID KEY DISPLAY 
+                   "employee removed successfully"
+               END-DELETE
+               CLOSE EMPLOYEE-FILE
+           ELSE
+               DISPLAY "operation cancelled".
 
        PROCEDURE-MAIN.
            PERFORM CLI-HANDLER UNTIL CLI-INPUT = "exit".
