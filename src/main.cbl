@@ -54,6 +54,8 @@
            ACCEPT CLI-INPUT.
            IF CLI-INPUT = "setup" THEN
                PERFORM PROCEDURE-SETUP
+           ELSE IF CLI-INPUT = "help" THEN
+               PERFORM PROCEDURE-HELP
            ELSE IF CLI-INPUT = "exit" THEN
                DISPLAY "exiting..."
       *    position
@@ -91,6 +93,17 @@
            DISPLAY "(2/2) employee file created"
 
            DISPLAY "setup complete".
+       PROCEDURE-HELP.
+           DISPLAY "---------------------------------------------".
+           DISPLAY "HELP WITH CRUNCH".
+           DISPLAY "github: https://github.com/theluqmn/crunch".
+           DISPLAY " ".
+           DISPLAY "available commands:".
+           DISPLAY "[pos]              overview of company positions".
+           DISPLAY "[emp]              overview of complay employeees".
+           DISPLAY "-".
+           DISPLAY "[setup]            setup crunch (first-time only)".
+           DISPLAY "[exit]             exit crunch".
        PROCEDURE-POSITION.
            DISPLAY "---------------------------------------------".
            DISPLAY "POSITION MANAGEMENT OVERVIEW".
