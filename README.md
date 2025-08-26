@@ -9,10 +9,8 @@ human resource management done right
 > [!NOTE]
 > this project is a work-in-progress.
 
-- [x] manage company positions
-- [x] manage employee data
-- [ ] payroll processing
-- [ ] comprehensive logging system
+- manage company positions
+- manage employee data
 
 ## how to use
 
@@ -40,6 +38,14 @@ this program is written in cobol and is compiled using `gnucobol`. it is a simpl
 - `POSITION(position-id TEXT PRIMARY KEY, name TEXT, base-salary INT)`
 - `EMPLOYEE(ic INT PRIMARY KEY, name TEXT, position-id FOREIGN KEY)`
 - `LOGS(id INT PRIMARY KEY, time INT, event TEXT)`
+
+### to-do
+
+- [x] manage company positions - v1.0
+- [x] manage employee data - v1.0
+- [ ] comprehensive logging system
+- [ ] payroll processing
+- [ ] track employee performance
 
 ## extras
 
