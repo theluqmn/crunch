@@ -51,7 +51,9 @@
        CLI-HANDLER.
            DISPLAY "---------------------------------------------".
            DISPLAY "> " WITH NO ADVANCING.
-           ACCEPT CLI-INPUT.
+           ACCEPT TEMPSTR-A.
+           MOVE FUNCTION LOWER-CASE(TEMPSTR-A) TO CLI-INPUT.
+
            IF CLI-INPUT = "setup" THEN
                PERFORM PROCEDURE-SETUP
            ELSE IF CLI-INPUT = "help" THEN
